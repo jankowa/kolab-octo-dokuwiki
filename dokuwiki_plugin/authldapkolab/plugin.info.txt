@@ -1,0 +1,7 @@
+base   authldapkolab
+author Andreas Gohr, Miloz, Jankow
+email  andi@splitbrain.org, jankow@datenkollektiv.net
+date   2015-11-21
+name   SSO Kolab-LDAP Auth Plugin 
+desc   Provides user authentication against an LDAP server; with some extensions for authentication against kolab roundcube
+url    http://www.dokuwiki.org/plugin:authldap
