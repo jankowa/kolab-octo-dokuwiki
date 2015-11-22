@@ -78,7 +78,25 @@ class dokuwiki extends rcube_plugin
         if (empty($_SESSION['dokuwikiauth']))
             $_SESSION['dokuwikiauth'] = md5('dokuwikisso' . $_SESSION['user_id'] . microtime() . $rcmail->config->get('des_key'));
 
+	// for multidomain
+	// for getting domain we simply take the part from login-name after "@": 
+	$domain = explode('@', $_SESSION['username'])[1];
+
+	// first we use single configured url
         $src  = $rcmail->config->get('dokuwiki_url');
+
+	// next we check for a general dokuwiki subdomain
+	if ($rcmail->config->get('dokuwiki_subdomain') <> '') {
+            $subdomain = $rcmail->config->get('dokuwiki_subdomain');
+	    $src = 'http://' . $subdomain . '.' . $domain . '/doku.php';
+	}
+
+	// use a configured url for this domain if exists
+	if ($rcmail->config->get('dokuwiki_urls')[$domain] <> '') {
+	    $src = 'http://' . $rcmail->config->get('dokuwiki_urls')[$domain] . '/doku.php';
+	}
+
+	//$src = 'http://' . $subdomain . '.' . $domain . '/doku.php';
         $src .= '?kolab_auth=' . strrev(rtrim(base64_encode(http_build_query(array(
             'session' => session_id(),
             'cname'   => session_name(),
